@@ -14,10 +14,15 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     private final String queueName = "BOB";
+    private final String secondQueue = "BOB2";
 
     @Bean
     public Queue queue() {
         return new Queue(queueName, true);
+    }
+    @Bean
+    public Queue secondQueue() {
+        return new Queue(secondQueue, true);
     }
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -32,6 +37,7 @@ public class RabbitMQConfig {
     public RabbitAdmin rabbitAdmin() {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
         rabbitAdmin.declareQueue(queue());
+        rabbitAdmin.declareQueue(secondQueue());
         return rabbitAdmin;
     }
 

@@ -21,6 +21,7 @@ import java.util.Random;
 public class ProduceMessage {
     private final RabbitTemplate rabbitTemplate;
     private final String queueName = "BOB";
+    private final String secondQueue = "BOB2";
     @PostMapping
     public ResponseEntity<Equipment> produce() {
         Equipment equipment = new Equipment();
@@ -38,6 +39,12 @@ public class ProduceMessage {
         //Send to Queue
         rabbitTemplate.convertAndSend(queueName, equipment);
         return ResponseEntity.ok().body(equipment);
+    }
+
+    @GetMapping
+    public ResponseEntity<String> produce(@RequestBody Message message) {
+        rabbitTemplate.convertAndSend(secondQueue, message);
+        return ResponseEntity.ok().body(message.getBody());
     }
     private static List<String> getNameList() {
         // Define your list of names
